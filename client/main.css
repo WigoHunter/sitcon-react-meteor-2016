@@ -1,0 +1,188 @@
+/* CSS declarations go here */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
+
+html, body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+:root {
+  --darkBlue: #005689;
+  --blue: #007CB9;
+  --yellow: #F6C667;
+  --lightBlue: #F1F8FD;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+.navi {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 60px;
+  background: transparent;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 5%;
+  justify-content: space-between;
+  position: absolute;
+}
+
+.navi h3 {
+  color: var(--yellow);
+  margin: 0;
+  font-size: 24px;
+}
+
+.navi ul {
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+#space {
+  height: 1000px;
+}
+
+.navi li {
+  list-style: none;
+  padding: 0 25px;
+  font-size: 16px;
+  height: 60px;
+  color: var(--lightBlue);
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  transition: all 0.15s ease;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+
+.content {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.react-simple-parallax-bg {
+  background-image: url("http://kurld.com/images/wallpapers/image/image-4.jpg");
+  height: 500px;
+}
+
+/*.parallax {
+  width: 100%;
+  height: 500px;
+  background-image: url("http://kurld.com/images/wallpapers/image/image-4.jpg");
+  background-size: cover;
+}*/
+
+form {
+  width: 100%;
+  height: 300px;
+  background: #82CD9E;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.3);
+}
+
+form h2 {
+  color: var(--darkBlue);
+  font-size: 26px;
+}
+
+input[type='text'] {
+  width: 300px;
+  height: 40px;
+  font-size: 16px;
+  text-align: center;
+  border: none;
+  outline: 0;
+}
+
+.list-container ul {
+  padding: 0;
+  width: 80%;
+  margin: 60px 10%;
+}
+
+.list-container ul li {
+  position: relative;
+  list-style: none;
+  margin: 15px;
+  width: 250px;
+  height: 200px;
+  background-color: var(--lightBlue);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 1px 1px 3px -1px rgba(0, 0, 0, 0.4);
+}
+
+.list-container ul li:hover {
+  transform: scale(1.1);
+}
+
+.list-container ul li h3,
+.list-container ul li p {
+  position: relative;
+  top: 0;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.list-container ul li h3 {
+  color: var(--darkBlue);
+  margin: 0 5px;
+}
+
+.list-container ul li p {
+  color: var(--blue);
+}
+
+.list-container ul li span {
+  transform: rotate(0);
+  transition: all 0.3s ease;
+  font-size: 34px;
+  color: var(--yellow);
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.list-container ul li:hover span {
+  transform: rotate(45deg);
+  opacity: 1;
+}
+
+.list-container ul li .btn {
+  background-color: #CCC;
+  color: #FFF;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border-width: 0;
+  box-sizing: 2px 1px 3px -1px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.list-container ul li .btn:hover {
+  opacity: 0.8;
+  background-color: var(--yellow);
+}
+
+.list-container ul li.done {
+  opacity: 0.3
+}
