@@ -4,87 +4,123 @@ import { createContainer } from 'meteor/react-meteor-data';
 
 import { Todos } from '../api/todos.js';
 
-export class TodoList extends React.Component {
-  handleSubmit(event) {
-    //prevent actual default submission
-    event.preventDefault();
+class TodoList extends React.Component {
+  constructor() {
+    super();
 
-    //Find the input
-    const text = ReactDOM.findDOMNode(this.refs.input).value;
+    //delete todo from state
+    this.state = {
+       all: true,
+       done: false,
+       pending: false,
+    }
+  }
 
-    //Push to DB
-    Todos.insert({
-      text,
-      createdAt: new Date(),
-      done: false,
+  addTodo(e) {
+    e.preventDefault();
+
+    const newTodo = {
+      task: ReactDOM.findDOMNode(this.refs.task).value,
+      done: false
+    }
+
+    Todos.insert(newTodo);
+
+    ReactDOM.findDOMNode(this.refs.task).value = "";
+  }
+
+  toggleStatus(todo) {
+    Todos.update(todo._id, {
+      $set: {done: !todo.done}
     });
-
-    //Clear form
-    ReactDOM.findDOMNode(this.refs.input).value = '';
   }
 
-  handleDelete(id) {
-    Todos.remove(id);
+  clickAll() {
+    this.setState({
+      all: true,
+      done: false,
+      pending: false,
+    })
   }
 
-  handleDone(id, status) {
-    Todos.update(id, {
-      $set: {done: !status}
+  clickDone() {
+    this.setState({
+      all: false,
+      done: true,
+      pending: false,
+    })
+  }
+
+  clickPending() {
+    this.setState({
+      all: false,
+      done: false,
+      pending: true,
     })
   }
 
   render() {
     return (
-      <div className="list-container">
-        <form onSubmit={this.handleSubmit.bind(this)}>
-          <h2>Todo List 2.0</h2>
-          <input
-            type="text"
-            ref="input"
-            id="input"
-            placeholder="New todo?"
-          />
+      <div className="list-wrap">
+        <h1>Todo List</h1>
+
+        <form className="form" onSubmit={this.addTodo.bind(this)}>
+          <input type='text' ref="task" />
+          <input type='submit' className="submit-btn" value="New Todo!" />
         </form>
-        <ul>
-          {this.props.todos.map((todo) => (
-            <Todo
-              todo={todo}
-              onClickDelete={this.handleDelete}
-              onClickDone={this.handleDone}
-            />
-          ))}
+
+        <div className="line"></div>
+
+        <ul className="todos">
+          {/* use props */}
+          {this.props.todos.map((todo) => {
+            if(this.state.all){
+              return (
+                <Todo todo={todo} onClick={this.toggleStatus} />
+              );
+            } else if(this.state.done && todo.done) {
+              return (
+                <Todo todo={todo} onClick={this.toggleStatus} />
+              )
+            } else if(this.state.pending && !todo.done) {
+              return (
+                <Todo todo={todo} onClick={this.toggleStatus} />
+              )
+            }
+
+          })}
         </ul>
+
+        <div className="filters">
+          {/* Add onClick */}
+          <FilterBtn status={this.state.all} text="All" onClick={this.clickAll.bind(this)} />
+          <FilterBtn status={this.state.done} text="Done" onClick={this.clickDone.bind(this)} />
+          <FilterBtn status={this.state.pending} text="Pending" onClick={this.clickPending.bind(this)} />
+        </div>
       </div>
     );
   }
 }
 
-TodoList.propTypes = {
-  todos: React.PropTypes.array.isRequired,
-};
-
-const Todo = ({ todo, onClickDelete, onClickDone }) => (
-  <li className={todo.done ? "done" : ""}>
-    <span onClick={() => onClickDelete(todo._id)}>
-      ＋
-    </span>
-    <h3>{todo.text}</h3>
-    <p>
-      {todo.createdAt.getMonth() + 1} 月 {todo.createdAt.getDate()} 日
-    </p>
-    <div
-      className="btn"
-      onClick={() => onClickDone(todo._id, todo.done)}
-    >
-      done
-    </div>
-  </li>
-);
-
 const TodoListContainer = createContainer(() => {
   return {
-    todos: Todos.find({}).fetch(),
+    todos: Todos.find().fetch(),
   }
 }, TodoList);
 
 export default TodoListContainer;
+
+// Add toggleStatus
+const Todo = ({ todo, onClick }) => (
+  <li className={todo.done ? "todo-done" : "todo"}>
+    <span className="status-btn" onClick={() => onClick(todo)}>＋</span>
+    {todo.task}
+  </li>
+);
+
+// Add onclick
+const FilterBtn = ({ status, text, onClick }) => (
+  <div className={status ? "filter-btn active" : "filter-btn"} onClick={onClick}>
+    {text}
+  </div>
+);
